@@ -1,0 +1,30 @@
+{
+  "name": "gridsome-source-directus",
+  "version": "0.0.1",
+  "description": "Gridsome Source Plugin to load data from Directus CMS",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:peXed/gridsome-source-directus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/peXed/gridsome-source-directus/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "email": "dominik@rocket.works",
+    "name": "Dominik Friedrich",
+    "url": "https://rocket.works"
+  },
+  "license": "MIT",
+  "keywords": [
+    "gridsome",
+    "gridsome-plugin",
+    "gridsome-source-plugin",
+    "directus"
+  ],
+  "dependencies": {
+    "@directus/sdk-js": "^5.0.0"
+  }
+}
