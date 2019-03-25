@@ -16,7 +16,7 @@ Example configuration:
 module.exports = {
   plugins: [
     {
-      use: '~/src/directus-loader',
+      use: 'gridsome-source-directus',
       options: {
         apiUrl: 'YOUR_API_URL',
         project: 'YOUR_PROJECT_NAME OR _ FOR THE DEFAULT PROJECT',
