@@ -58,7 +58,7 @@ class DirectusSource {
     
     if(email && password) {
       try {
-        await client.login(Object.assign({ email, password }, direcutsOptions));
+        await client.login(Object.assign({ email, password, persist: false }, direcutsOptions));
         
         let data = await client.getCollections();
       } catch (e) {
@@ -120,6 +120,7 @@ class DirectusSource {
     }
 
     console.log("DIRECTUS: Loading done!");
+    client.logout();
 
   }
 }
