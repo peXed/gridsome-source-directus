@@ -48,17 +48,17 @@ class DirectusSource {
     const { addContentType, getContentType, makeTypeName, slugify } = store
     const { apiUrl, project, staticToken, email, password, collections } = this.options
 
-    const direcutsOptions = {
+    const directusOptions = {
       url: apiUrl,
       project: project,
       token: staticToken
     };
     
-    const client = new DirectusSDK(direcutsOptions);
+    const client = new DirectusSDK(directusOptions);
     
     if(email && password) {
       try {
-        await client.login(Object.assign({ email, password, persist: false }, direcutsOptions));
+        await client.login(Object.assign({ email, password, persist: false }, directusOptions));
         
         let data = await client.getCollections();
       } catch (e) {
@@ -76,10 +76,10 @@ class DirectusSource {
     for(const collection of collections) {
       let collectionName;
       let params;
-      let direcutsPathName;
+      let directusPathName;
       if(typeof collection === 'object') {
         collectionName = collection.name;
-        direcutsPathName = collection.direcutsPathName || collectionName
+        directusPathName = collection.directusPathName || collectionName
         delete collection.name;
         params = collection;
       } else {
@@ -87,7 +87,7 @@ class DirectusSource {
       }
 
       try {
-        let data = await client.getItems(direcutsPathName, params);
+        let data = await client.getItems(directusPathName, params);
         data = data.data;
 
         let route;
