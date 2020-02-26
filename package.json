@@ -1,6 +1,6 @@
 {
   "name": "gridsome-source-directus",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Gridsome Source Plugin to load data from Directus CMS",
   "repository": {
     "type": "git",
