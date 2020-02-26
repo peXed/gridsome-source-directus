@@ -3,11 +3,11 @@ Gridsome Source Plugin to load data from Directus CMS, download images and files
 
 ## Install
 - yarn add gridsome-source-directus
+- Add `.cache-directus` to the .gitignore file, if you don't want to check in your downloaded files and images to git.
 
 OR
 
 - npm install gridsome-source-directus
-
 - Add `.cache-directus` to the .gitignore file, if you don't want to check in your downloaded files and images to git.
 
 ## Usage
