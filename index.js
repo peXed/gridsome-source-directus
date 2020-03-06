@@ -60,6 +60,7 @@ function sanitizeItem(fields) {
   let _id = id.toString();
 
   delete fields.id;
+  fields._directusID = _id;
 
   return sanitizeFields(fields);
 }
