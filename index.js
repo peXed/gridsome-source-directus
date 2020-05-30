@@ -1,7 +1,15 @@
 const DirectusSDK = require("@directus/sdk-js");
-const http = require('https');
 const fs = require('fs');
 const path = require('path');
+
+/**
+ * Convert `const http` to variable to change protocol from project options
+ */
+let http = require('https');
+/**
+ * Default upload image path
+ */
+let uploadImagesDir = './.cache-directus/img-cache'
 
 const imageTypes = [
   'image/jpeg',
@@ -11,7 +19,7 @@ const imageTypes = [
 ]
 
 // TODO ADD CLEANUP OF UNUSED IMAGES / FILES
-let download = async (url, dest, dir = './.cache-directus/img-cache') => {
+let download = async (url, dest, dir = uploadImagesDir) => {
   
   var imgName = dest;
 
@@ -65,6 +73,39 @@ function sanitizeItem(fields) {
   return sanitizeFields(fields);
 }
 
+/**
+ * Convert nested object to flat object
+ * https://stackoverflow.com/questions/34513964/how-to-convert-this-nested-object-into-a-flat-object
+ * */
+function traverseAndFlatten(currentNode, target, flattenedKey) {
+  for (var key in currentNode) {
+    if (currentNode.hasOwnProperty(key)) {
+      var newKey;
+      if (flattenedKey === undefined) {
+        newKey = key;
+      } else {
+        newKey = flattenedKey + '__' + key;
+      }
+
+      var value = currentNode[key];
+      if (typeof value === "object") {
+        traverseAndFlatten(value, target, newKey);
+      } else {
+        target[newKey] = value;
+      }
+    }
+  }
+}
+
+function flatten(obj) {
+  var flattenedObject = {};
+  traverseAndFlatten(obj, flattenedObject);
+  return flattenedObject;
+}
+/**
+ * End. https://stackoverflow.com/questions/34513964/how-to-convert-this-nested-object-into-a-flat-object
+ * */
+
 async function checkForImages(item) {
 
   for(const itemKey in item) {
@@ -111,6 +152,18 @@ class DirectusSource {
   constructor (api, options) {
     this.api = api;
     this.options = options;
+
+    /**
+     * Options for setting download protocol && images upload directory
+     */
+    if( options.global ) {
+      if( options.global.protocol ) {
+        http = require(options.global.protocol)
+      }
+      if( options.global.uploadImagesDir ) {
+        uploadImagesDir = options.global.uploadImagesDir
+      }
+    }
     api.loadSource(args => this.fetchContent(args));
   }
 
@@ -210,7 +263,22 @@ class DirectusSource {
             item = await checkForDownloads(item);
           }
 
-          contentType.addNode(sanitizeItem(item))
+          /**
+           * Convert nested object to flat object
+           */
+          if( params.flat ) {
+            item = flatten(item);
+          }
+
+          /**
+           * Check if params.sanitizeID === false to sanitize Node ID or not
+           */
+          if( params.sanitizeID === false ) {
+            contentType.addNode(sanitizeFields(item))
+          }
+          else {
+            contentType.addNode(sanitizeItem(item))
+          }
         }
 
       } catch (e) {
