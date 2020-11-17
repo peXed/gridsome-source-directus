@@ -231,6 +231,10 @@ class DirectusSource {
       }
       
       try {
+        if(!params.limit) {
+          params.limit = -1;
+        }
+
         let data = await client.getItems(directusPathName, params);
         data = data.data;
 
